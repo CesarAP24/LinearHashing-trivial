@@ -149,7 +149,7 @@ struct ForwardList{
                 os << current->data << ", ";
                 current = current->next;
             }
-            os << current->data << "]" << std::endl;
+            os << current->data << "]";
         }
         return os;
     }
