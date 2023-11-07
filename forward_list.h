@@ -29,6 +29,19 @@ struct ForwardList{
     struct fl_iterator{
         Node<T>* current;
 
+        fl_iterator(const fl_iterator& other){
+            this->current = other.current;
+        }
+
+        fl_iterator& operator=(const fl_iterator& other){
+            this->current = other.current;
+            return *this;
+        }
+
+        fl_iterator(){
+            this->current = nullptr;
+        }
+
         fl_iterator(Node<T>* current){
             this->current = current;
         }

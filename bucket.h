@@ -53,6 +53,7 @@ struct Bucket{
     }
 
     ~Bucket(){
+        delete this->list;
         if(this->next != nullptr){
             delete this->next;
         }
@@ -61,6 +62,19 @@ struct Bucket{
 
     struct b_iterator{
         Bucket<K, V>* current;
+
+        b_iterator(){
+            this->current = nullptr;
+        }
+
+        b_iterator(const b_iterator& other){
+            this->current = other.current;
+        }
+
+        b_iterator& operator=(const b_iterator& other){
+            this->current = other.current;
+            return *this;
+        }
 
         b_iterator(Bucket* current){
             this->current = current;
@@ -106,7 +120,23 @@ struct Bucket{
     }
 
     void remove(K key){
-        //TO DO
+        typename Bucket<K, V>::b_iterator it;
+        typename Bucket<K, V>::b_iterator prev;
+        for (it = this->begin(); it != this->end(); ++it){
+            for (auto it2 = it->list->begin(); it2 != it->list->end(); ++it2){ //it2 es el bucket actual 
+                if ((*it2).key == key){
+                    if(it->list->count <= 1 && it->next != nullptr){
+                        (*prev).next = (*it).next;
+                        delete it.current;
+                    }else{
+                        this->list->erase(it2);
+                    }
+                    return;
+                }
+            }
+            prev = it;
+        }
+
     }
 
     bool search(K key){
@@ -117,7 +147,20 @@ struct Bucket{
                 }
             }
         }
+        return false;
     }
+
+    V get(K key){
+        for(auto it=this->begin(); it!= this->end(); ++it){
+            for(auto it2 = it->list->begin(); it2 != it->list->end(); ++it2){
+                if((*it2).key == key){
+                    return (*it2).value;
+                }
+            }
+        }
+        return V();
+    }
+
 
 
     b_iterator begin(){

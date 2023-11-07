@@ -16,8 +16,6 @@ int main(int argc, char const *argv[])
     linearHashing.put(14, "habla");
     linearHashing.put(7, "porfavor");
 
-    linearHashing.print();
-
     ASSERT(linearHashing.search(1) == true, "search is not working");
     ASSERT(linearHashing.search(45) == false, "search is not working");
 
@@ -37,6 +35,10 @@ int main(int argc, char const *argv[])
     linearHashing.erase(2);
     ASSERT(linearHashing.search(1) == false, "search is not working");
     ASSERT(linearHashing.search(2) == false, "search is not working");
+    //Assert get
+    ASSERT(linearHashing.get(1) == "", "get is not working");
+    ASSERT(linearHashing.get(2) == "", "get is not working");
+    ASSERT(linearHashing.get(3) == "es", "get is not working");
 
     
     return 0;

@@ -40,19 +40,33 @@ class LinearHash{
         }
 
         void erase(K key){
-            //TO DO
+            int index = hash_function(key, this->N);
+            if (index < this->sp){
+                index = hash_function(key,  this->N*2);
+            }
+
+            this->table[index]->remove(key);
         }
 
         bool search(K key){
-            //TO DO
-            return false;
+            int index = hash_function(key, this->N);
+            if (index < this->sp){
+                index = hash_function(key, this->N*2);
+            }
+
+            bool found = this->table[index]->search(key);
+            return found;
         }
 
         V get(K key){
-            //TO DO
-            return V();
-        }
+            int index = hash_function(key, this->N);
+            if (index < this->sp){
+                index = hash_function(key, this->N*2);
+            }
 
+            V value = this->table[index]->get(key);
+            return value;
+        }
         void split(){
             int B = this->sp;
             int B_prime = B + this->N;
