@@ -1,6 +1,15 @@
 #include "forward_list.h"
 #include <string>
 #include <iostream>
+#include "hash_function.h"
+
+
+
+//sobrecarga de to_string para string
+std::string to_string(std::string s){
+    return s;
+}
+
 
 
 using namespace std;
@@ -31,7 +40,7 @@ struct Bucket{
     ForwardList<Data<K, V>>* list;
     Bucket* next = nullptr;
     bool overflowed = false;
-    int max_collisions = 0;
+    int max_collisions = 2;
 
     Bucket(){
         this->list = new ForwardList<Data<K, V>>();
@@ -119,6 +128,10 @@ struct Bucket{
         return b_iterator(nullptr);
     }
 
+    bool is_overflowed(){
+        return this->overflowed;
+    }
+
     string toString(){
         string result = "";
         for (auto it = this->begin(); it != this->end(); ++it){
@@ -137,4 +150,31 @@ struct Bucket{
         }
         return result;
     }
+
 };
+
+
+template <typename K, typename V>
+Bucket<K, V>* split_bucket(Bucket<K, V>*& bucket, int N, int B, int B_prime){
+    Bucket<K, V>* Bhelper = new Bucket<K, V>(bucket->max_collisions);
+    Bucket<K, V>* B_prime_helper = new Bucket<K, V>(bucket->max_collisions);
+
+    //insertar los elementos de this en Bhelper o B_prime_helper
+    for (auto it = bucket->begin(); it != bucket->end(); ++it){
+        for (auto it2 = it->list->begin(); it2 != it->list->end(); ++it2){
+            int index = hash_function((*it2).key, N*2);
+            if (index == B_prime){
+                B_prime_helper->insert((*it2).key, (*it2).value);
+            }
+            else{
+                Bhelper->insert((*it2).key, (*it2).value);
+            }
+        }
+    }
+
+    delete bucket;
+    bucket = nullptr;
+    bucket = Bhelper; 
+
+    return B_prime_helper;
+}

@@ -7,30 +7,31 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-    LinearHash<int, float> linearHashing(2, 2);
+    LinearHash<int, string> linearHashing(2, 2);
 
-    linearHashing.put(1, 1.1);
-    linearHashing.put(2, 7.2);
-    linearHashing.put(3, 3.45);
-    linearHashing.put(5, 42.4);
-    linearHashing.put(14, 4.5);
-    linearHashing.put(7, 7.6);
+    linearHashing.put(1, "Alo");
+    linearHashing.put(2, "quien");
+    linearHashing.put(3, "es");
+    linearHashing.put(5, "quien");
+    linearHashing.put(14, "habla");
+    linearHashing.put(7, "porfavor");
+
+    linearHashing.print();
 
     ASSERT(linearHashing.search(1) == true, "search is not working");
     ASSERT(linearHashing.search(45) == false, "search is not working");
 
-    ASSERT(linearHashing.get(1) == 1.1, "get is not working");
-    ASSERT(linearHashing.get(45) == 0, "get is not working");
+    ASSERT(linearHashing.get(1) == "Alo", "get is not working");
+    ASSERT(linearHashing.get(45) == "", "get is not working");
     /*
     0: []
-    1: [1:1.1, 5:42.4]
-    2: [2:7.2, 14:4.5]
-    3: [3:3.45, 7:7.6]
+    1: [1:"Alo", 5:"quien"]
+    2: [2:"quien", 14:"habla"]
+    3: [3:"es", 7:"porfavor"]
     */
 
-   //assert del print
-    ASSERT(linearHashing.toString() == "0: []\n1: [1:1.1, 5:42.4]\n2: [2:7.2, 14:4.5]\n3: [3:3.45, 7:7.6]\n", "toString is not working");
-    
+    //assert del print
+    ASSERT(linearHashing.toString() == "0: []\n1: [1:Alo, 5:quien]\n2: [2:quien, 14:habla]\n3: [3:es, 7:porfavor]\n", "toString is not working");
 
     linearHashing.erase(1);
     linearHashing.erase(2);
