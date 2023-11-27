@@ -1,3 +1,6 @@
+#ifndef HASH_FUNCTION_H
+#define HASH_FUNCTION_H
+
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -22,3 +25,5 @@ int hash_function(char* key, int capacity){
     }
     return sum % capacity;
 }
+
+#endif // HASH_FUNCTION_H

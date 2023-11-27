@@ -67,6 +67,7 @@ public:
 
 int main(int argc, char const *argv[])
 {
+
     LinearHash<int, string> linearHashing(2, 2);
     LinearHashVisualizer<int, std::string> visualizer(linearHashing);
 
@@ -76,6 +77,7 @@ int main(int argc, char const *argv[])
     linearHashing.put(5, "quien");
     linearHashing.put(14, "habla");
     linearHashing.put(7, "porfavor");
+    visualizer.run();
 
     visualizer.run();
 
