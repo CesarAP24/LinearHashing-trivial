@@ -79,8 +79,13 @@ int main(int argc, char const *argv[])
     linearHashing.put(7, "porfavor");
     visualizer.run();
 
+    visualizer.run();
+
+
     ASSERT(linearHashing.search(1) == true, "search is not working");
     ASSERT(linearHashing.search(45) == false, "search is not working");
+
+    cout << linearHashing.toString() << endl;
 
     ASSERT(linearHashing.get(1) == "Alo", "get is not working");
     ASSERT(linearHashing.get(45) == "", "get is not working");
@@ -103,6 +108,7 @@ int main(int argc, char const *argv[])
     ASSERT(linearHashing.get(2) == "", "get is not working");
     ASSERT(linearHashing.get(3) == "es", "get is not working");
 
-    
+    sf::sleep(sf::seconds(5));
+
     return 0;
 }

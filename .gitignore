@@ -31,8 +31,7 @@
 *.out
 *.app
 
-#config
-/cmake-build-debug
-/.vscode
-CMakeLists.txt
+# Project exclude paths
+/cmake-build-debug/
+
 /.idea

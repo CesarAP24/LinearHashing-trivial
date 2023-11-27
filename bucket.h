@@ -1,6 +1,3 @@
-#ifndef BUCKET_H
-#define BUCKET_H
-
 #include "forward_list.h"
 #include <string>
 #include <iostream>
@@ -219,6 +216,7 @@ struct Bucket{
 
         return info;
     }
+
 };
 
 
@@ -242,7 +240,7 @@ Bucket<K, V>* split_bucket(Bucket<K, V>*& bucket, int N, int B, int B_prime){
 
     delete bucket;
     bucket = nullptr;
+    bucket = Bhelper; 
+
     return B_prime_helper;
 }
-
-#endif // BUCKET_H
