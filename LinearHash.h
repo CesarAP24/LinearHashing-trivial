@@ -26,6 +26,18 @@ class LinearHash{
             delete[] this->table;
         }
 
+        int getSize() const {
+            return size;
+        }
+
+        std::string getBucketInfo(int index) const {
+            if (index >= 0 && index < size) {
+                return table[index]->toString();
+            } else {
+                return "Invalid bucket index";
+            }
+        }
+
         void put(K key, V value){
             int index = hash_function(key, this->N);
             if (index < this->sp){

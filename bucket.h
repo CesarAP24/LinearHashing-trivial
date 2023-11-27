@@ -194,6 +194,29 @@ struct Bucket{
         return result;
     }
 
+    std::string getBucketInfo() const {
+        std::string info = "Overflowed: " + std::to_string(overflowed) + "\n";
+        info += "Max Collisions: " + std::to_string(max_collisions) + "\n";
+
+        for (auto it = begin(); it != end(); ++it) {
+            info += "  [";
+            for (auto it2 = it->list->begin(); it2 != it->list->end(); ++it2) {
+                info += to_string((*it2).key) + ":" + to_string((*it2).value);
+                if (it2->next != nullptr) {
+                    info += ", ";
+                }
+            }
+            info += "]";
+
+            if (it->next != nullptr) {
+                info += " -> ";
+            }
+            info += "\n";
+        }
+
+        return info;
+    }
+
 };
 
 
