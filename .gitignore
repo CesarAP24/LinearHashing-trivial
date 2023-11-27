@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+#config
+/cmake-build-debug
+/.vscode
+CMakeLists.txt

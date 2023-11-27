@@ -1,3 +1,5 @@
+#ifndef FORWARD_LIST_H
+#define FORWARD_LIST_H
 
 #include <iostream>
 #include <string>
@@ -198,3 +200,5 @@ struct ForwardList{
         this->count++;
     }
 };
+
+#endif // FORWARD_LIST_H
