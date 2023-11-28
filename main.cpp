@@ -11,9 +11,79 @@ class LinearHashVisualizer {
 private:
     LinearHash<K, V>& linearHash;
     sf::RenderWindow window;
+    sf::Font font;
+    sf::Text closeButton;
+    sf::Text inputLabel;
+    sf::RectangleShape inputBox;
+    sf::Text keyInputLabel;
+    sf::RectangleShape keyInputBox;
+    sf::Text keyInputText;
+    sf::Text valueInputLabel;
+    sf::RectangleShape valueInputBox;
+    sf::Text valueInputText;
+    sf::Text insertButton;
 
 public:
-    LinearHashVisualizer(LinearHash<K, V>& linearHash) : linearHash(linearHash), window(sf::VideoMode(800, 600), "Linear Hash Table Visualization") {}
+    LinearHashVisualizer(LinearHash<K, V>& linearHash) : linearHash(linearHash), window(sf::VideoMode(800, 600), "Linear Hash Table Visualization") {
+        if (!font.loadFromFile("../arial.ttf")) {
+            // handle font loading error
+        }
+
+        closeButton.setFont(font);
+        closeButton.setString("Close");
+        closeButton.setCharacterSize(16);
+        closeButton.setFillColor(sf::Color::Black);
+        closeButton.setPosition(10, window.getSize().y - 30);
+
+        inputLabel.setFont(font);
+        inputLabel.setString("Insert Key:");
+        inputLabel.setCharacterSize(16);
+        inputLabel.setFillColor(sf::Color::Black);
+        inputLabel.setPosition(10, window.getSize().y - 80);
+
+        inputBox.setSize(sf::Vector2f(100, 20));
+        inputBox.setOutlineColor(sf::Color::Black);
+        inputBox.setOutlineThickness(2);
+        inputBox.setPosition(120, window.getSize().y - 85);
+
+        keyInputLabel.setFont(font);
+        keyInputLabel.setString("Key:");
+        keyInputLabel.setCharacterSize(16);
+        keyInputLabel.setFillColor(sf::Color::Black);
+        keyInputLabel.setPosition(10, window.getSize().y - 120);
+
+        keyInputBox.setSize(sf::Vector2f(100, 20));
+        keyInputBox.setOutlineColor(sf::Color::Black);
+        keyInputBox.setOutlineThickness(2);
+        keyInputBox.setPosition(50, window.getSize().y - 125);
+
+        keyInputText.setFont(font);
+        keyInputText.setCharacterSize(16);
+        keyInputText.setFillColor(sf::Color::Black);
+        keyInputText.setPosition(55, window.getSize().y - 123);
+
+        valueInputLabel.setFont(font);
+        valueInputLabel.setString("Value:");
+        valueInputLabel.setCharacterSize(16);
+        valueInputLabel.setFillColor(sf::Color::Black);
+        valueInputLabel.setPosition(10, window.getSize().y - 160);
+
+        valueInputBox.setSize(sf::Vector2f(100, 20));
+        valueInputBox.setOutlineColor(sf::Color::Black);
+        valueInputBox.setOutlineThickness(2);
+        valueInputBox.setPosition(60, window.getSize().y - 165);
+
+        valueInputText.setFont(font);
+        valueInputText.setCharacterSize(16);
+        valueInputText.setFillColor(sf::Color::Black);
+        valueInputText.setPosition(65, window.getSize().y - 163);
+
+        insertButton.setFont(font);
+        insertButton.setString("Insert");
+        insertButton.setCharacterSize(16);
+        insertButton.setFillColor(sf::Color::Black);
+        insertButton.setPosition(230, window.getSize().y - 85);
+    }
 
     void drawBucket(int index, int x, int y) {
         sf::RectangleShape rect(sf::Vector2f(150, 80));
@@ -23,20 +93,43 @@ public:
 
         window.draw(rect);
 
-        // Display bucket information
         std::string text = "Bucket " + std::to_string(index) + "\n" + linearHash.getBucketInfo(index);
-        sf::Font font;
-        if (!font.loadFromFile("../arial.ttf")) {
-            // handle font loading error
-        }
-
         sf::Text info(text, font, 12);
         info.setPosition(x + 10, y + 10);
         info.setFillColor(sf::Color::Black);
 
         window.draw(info);
-    }
 
+        window.draw(inputLabel);
+        window.draw(inputBox);
+        window.draw(keyInputLabel);
+        window.draw(keyInputBox);
+        window.draw(valueInputLabel);
+        window.draw(valueInputBox);
+        window.draw(insertButton);
+        window.draw(closeButton);
+
+        // Draw input texts
+        window.draw(keyInputText);
+        window.draw(valueInputText);
+    }
+    void handleTextInput(sf::Event event) {
+        if (event.type == sf::Event::TextEntered) {
+            // Handle input for key
+            if (event.text.unicode == 8 && !keyInputText.getString().isEmpty()) {
+                keyInputText.setString(keyInputText.getString().substring(0, keyInputText.getString().getSize() - 1));
+            } else if (event.text.unicode >= 32 && event.text.unicode <= 126) {
+                keyInputText.setString(keyInputText.getString() + static_cast<char>(event.text.unicode));
+            }
+
+            // Handle input for value
+            if (event.text.unicode == 8 && !valueInputText.getString().isEmpty()) {
+                valueInputText.setString(valueInputText.getString().substring(0, valueInputText.getString().getSize() - 1));
+            } else if (event.text.unicode >= 32 && event.text.unicode <= 126) {
+                valueInputText.setString(valueInputText.getString() + static_cast<char>(event.text.unicode));
+            }
+        }
+    }
     void drawTable() {
         window.clear(sf::Color::White);
 
@@ -58,6 +151,24 @@ public:
                 if (event.type == sf::Event::Closed) {
                     window.close();
                 }
+
+                if (event.type == sf::Event::MouseButtonPressed) {
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                    if (closeButton.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                                               static_cast<float>(mousePos.y))) {
+                        window.close();
+                    } else if (insertButton.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                                                       static_cast<float>(mousePos.y))) {
+                        // Insert key-value pair
+                        K key = static_cast<K>(std::stoi(keyInputText.getString().toAnsiString()));
+                        V value = valueInputText.getString().toAnsiString();
+                        linearHash.put(key, value);
+                        keyInputText.setString("");
+                        valueInputText.setString("");
+                    }
+                }
+
+                handleTextInput(event);
             }
 
             drawTable();
@@ -77,7 +188,6 @@ int main(int argc, char const *argv[])
     linearHashing.put(5, "quien");
     linearHashing.put(14, "habla");
     linearHashing.put(7, "porfavor");
-    visualizer.run();
 
     visualizer.run();
 
