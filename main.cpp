@@ -1,10 +1,7 @@
 #include "LinearHash.h"
-#include <iostream>
-#include <string>
 #include "tester.h"
 #include <SFML/Graphics.hpp>
-
-using namespace std;
+#include <iostream>
 
 template <typename K, typename V>
 class LinearHashVisualizer {
@@ -35,16 +32,6 @@ public:
         closeButton.setFillColor(sf::Color::Black);
         closeButton.setPosition(10, window.getSize().y - 30);
 
-        inputLabel.setFont(font);
-        inputLabel.setString("Insert Key:");
-        inputLabel.setCharacterSize(16);
-        inputLabel.setFillColor(sf::Color::Black);
-        inputLabel.setPosition(10, window.getSize().y - 80);
-
-        inputBox.setSize(sf::Vector2f(100, 20));
-        inputBox.setOutlineColor(sf::Color::Black);
-        inputBox.setOutlineThickness(2);
-        inputBox.setPosition(120, window.getSize().y - 85);
 
         keyInputLabel.setFont(font);
         keyInputLabel.setString("Key:");
@@ -66,27 +53,27 @@ public:
         valueInputLabel.setString("Value:");
         valueInputLabel.setCharacterSize(16);
         valueInputLabel.setFillColor(sf::Color::Black);
-        valueInputLabel.setPosition(10, window.getSize().y - 160);
+        valueInputLabel.setPosition(160, window.getSize().y - 120);
 
         valueInputBox.setSize(sf::Vector2f(100, 20));
         valueInputBox.setOutlineColor(sf::Color::Black);
         valueInputBox.setOutlineThickness(2);
-        valueInputBox.setPosition(60, window.getSize().y - 165);
+        valueInputBox.setPosition(220, window.getSize().y - 125);
 
         valueInputText.setFont(font);
         valueInputText.setCharacterSize(16);
         valueInputText.setFillColor(sf::Color::Black);
-        valueInputText.setPosition(65, window.getSize().y - 163);
+        valueInputText.setPosition(225, window.getSize().y - 123);
 
         insertButton.setFont(font);
         insertButton.setString("Insert");
         insertButton.setCharacterSize(16);
         insertButton.setFillColor(sf::Color::Black);
-        insertButton.setPosition(230, window.getSize().y - 85);
+        insertButton.setPosition(10, window.getSize().y - 160);
     }
 
     void drawBucket(int index, int x, int y) {
-        sf::RectangleShape rect(sf::Vector2f(150, 80));
+        sf::RectangleShape rect(sf::Vector2f(200, 80));
         rect.setPosition(x, y);
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(2);
@@ -113,6 +100,7 @@ public:
         window.draw(keyInputText);
         window.draw(valueInputText);
     }
+
     void handleTextInput(sf::Event event) {
         if (event.type == sf::Event::TextEntered) {
             // Handle input for key
@@ -129,19 +117,6 @@ public:
                 valueInputText.setString(valueInputText.getString() + static_cast<char>(event.text.unicode));
             }
         }
-    }
-    void drawTable() {
-        window.clear(sf::Color::White);
-
-        int x = 50;
-        int y = 50;
-
-        for (int i = 0; i < linearHash.getSize(); ++i) {
-            drawBucket(i, x, y);
-            x += 170; // Move to the next bucket with some spacing
-        }
-
-        window.display();
     }
 
     void run() {
@@ -173,6 +148,20 @@ public:
 
             drawTable();
         }
+    }
+
+    void drawTable() {
+        window.clear(sf::Color::White);
+
+        int x = 50;
+        int y = 50;
+
+        for (int i = 0; i < linearHash.getSize(); ++i) {
+            drawBucket(i, x, y);
+            x += 220; // Move to the next bucket with some spacing
+        }
+
+        window.display();
     }
 };
 
