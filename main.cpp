@@ -28,7 +28,11 @@ private:
     const int maxBucketHeight = 80;
 
 public:
-    LinearHashVisualizer(LinearHash<K, V>& linearHash) : linearHash(linearHash), window(sf::VideoMode(800, 600), "Linear Hash Table Visualization") {
+    LinearHashVisualizer(LinearHash<K, V>& linearHash) : linearHash(linearHash) {
+        // Configurar ventana en pantalla completa
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+        window.create(desktop, "Linear Hash Table Visualization", sf::Style::Fullscreen);
+
         if (!font.loadFromFile("../arial.ttf")) {
             // handle font loading error
         }
@@ -82,6 +86,12 @@ public:
         // Ajustar tamaño del cubo si es necesario
         int bucketWidth = std::min(int(maxBucketWidth), int(window.getSize().x - x));
         int bucketHeight = std::min(int(maxBucketHeight), int(window.getSize().y - y));
+
+        // Reducir tamaño si se sale de la pantalla
+        if (bucketWidth < maxBucketWidth || bucketHeight < maxBucketHeight) {
+            bucketWidth = std::max(0, bucketWidth); // Ajustar a 0 si es negativo
+            bucketHeight = std::max(0, bucketHeight); // Ajustar a 0 si es negativo
+        }
 
         sf::RectangleShape rect(sf::Vector2f(bucketWidth, bucketHeight));
         rect.setPosition(x, y);
