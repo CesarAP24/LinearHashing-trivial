@@ -233,7 +233,5 @@ int main(int argc, char const *argv[])
     ASSERT(linearHashing.get(2) == "", "get is not working");
     ASSERT(linearHashing.get(3) == "es", "get is not working");
 
-    sf::sleep(sf::seconds(5));
-
     return 0;
 }
