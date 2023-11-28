@@ -2,6 +2,9 @@
 #include "tester.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <algorithm>
+
+using namespace std;
 
 template <typename K, typename V>
 class LinearHashVisualizer {
@@ -19,6 +22,10 @@ private:
     sf::RectangleShape valueInputBox;
     sf::Text valueInputText;
     sf::Text insertButton;
+
+    // Tamaño máximo del cubo antes de reducir
+    const int maxBucketWidth = 200;
+    const int maxBucketHeight = 80;
 
 public:
     LinearHashVisualizer(LinearHash<K, V>& linearHash) : linearHash(linearHash), window(sf::VideoMode(800, 600), "Linear Hash Table Visualization") {
@@ -72,7 +79,11 @@ public:
     }
 
     void drawBucket(int index, int x, int y) {
-        sf::RectangleShape rect(sf::Vector2f(200, 80));
+        // Ajustar tamaño del cubo si es necesario
+        int bucketWidth = std::min(int(maxBucketWidth), int(window.getSize().x - x));
+        int bucketHeight = std::min(int(maxBucketHeight), int(window.getSize().y - y));
+
+        sf::RectangleShape rect(sf::Vector2f(bucketWidth, bucketHeight));
         rect.setPosition(x, y);
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(2);
@@ -157,7 +168,7 @@ public:
 
         for (int i = 0; i < linearHash.getSize(); ++i) {
             drawBucket(i, x, y);
-            y += 100; // Move to the next row with some spacing
+            y += maxBucketHeight + 10; // Move to the next bucket with some spacing
         }
 
         window.display();
