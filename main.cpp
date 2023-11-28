@@ -139,6 +139,7 @@ public:
         }
     }
 
+
     void run() {
         while (window.isOpen()) {
             sf::Event event;
