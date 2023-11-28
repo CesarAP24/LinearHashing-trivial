@@ -32,7 +32,6 @@ public:
         closeButton.setFillColor(sf::Color::Black);
         closeButton.setPosition(10, window.getSize().y - 30);
 
-
         keyInputLabel.setFont(font);
         keyInputLabel.setString("Key:");
         keyInputLabel.setCharacterSize(16);
@@ -158,7 +157,7 @@ public:
 
         for (int i = 0; i < linearHash.getSize(); ++i) {
             drawBucket(i, x, y);
-            x += 220; // Move to the next bucket with some spacing
+            y += 100; // Move to the next row with some spacing
         }
 
         window.display();
