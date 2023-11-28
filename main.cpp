@@ -22,6 +22,7 @@ private:
     sf::RectangleShape valueInputBox;
     sf::Text valueInputText;
     sf::Text insertButton;
+    bool isKeyInputActive = true;
 
     // Tamaño máximo del cubo antes de reducir
     const int maxBucketWidth = 200;
@@ -123,18 +124,14 @@ public:
 
     void handleTextInput(sf::Event event) {
         if (event.type == sf::Event::TextEntered) {
-            // Handle input for key
-            if (event.text.unicode == 8 && !keyInputText.getString().isEmpty()) {
-                keyInputText.setString(keyInputText.getString().substring(0, keyInputText.getString().getSize() - 1));
-            } else if (event.text.unicode >= 32 && event.text.unicode <= 126) {
-                keyInputText.setString(keyInputText.getString() + static_cast<char>(event.text.unicode));
-            }
+            // Seleccionar la caja de texto activa
+            sf::Text& activeText = isKeyInputActive ? keyInputText : valueInputText;
 
-            // Handle input for value
-            if (event.text.unicode == 8 && !valueInputText.getString().isEmpty()) {
-                valueInputText.setString(valueInputText.getString().substring(0, valueInputText.getString().getSize() - 1));
+            // Handle input for active text
+            if (event.text.unicode == 8 && !activeText.getString().isEmpty()) {
+                activeText.setString(activeText.getString().substring(0, activeText.getString().getSize() - 1));
             } else if (event.text.unicode >= 32 && event.text.unicode <= 126) {
-                valueInputText.setString(valueInputText.getString() + static_cast<char>(event.text.unicode));
+                activeText.setString(activeText.getString() + static_cast<char>(event.text.unicode));
             }
         }
     }
@@ -161,6 +158,14 @@ public:
                         linearHash.put(key, value);
                         keyInputText.setString("");
                         valueInputText.setString("");
+                    } else if (keyInputBox.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                                                      static_cast<float>(mousePos.y))) {
+                        // Activar la caja de texto de clave
+                        isKeyInputActive = true;
+                    } else if (valueInputBox.getGlobalBounds().contains(static_cast<float>(mousePos.x),
+                                                                        static_cast<float>(mousePos.y))) {
+                        // Activar la caja de texto de valor
+                        isKeyInputActive = false;
                     }
                 }
 
