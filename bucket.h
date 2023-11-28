@@ -1,3 +1,5 @@
+#ifndef BUCKET_H
+#define BUCKET_H
 #include "forward_list.h"
 #include <string>
 #include <iostream>
@@ -123,7 +125,7 @@ struct Bucket{
         typename Bucket<K, V>::b_iterator it;
         typename Bucket<K, V>::b_iterator prev;
         for (it = this->begin(); it != this->end(); ++it){
-            for (auto it2 = it->list->begin(); it2 != it->list->end(); ++it2){ //it2 es el bucket actual 
+            for (auto it2 = it->list->begin(); it2 != it->list->end(); ++it2){ //it2 es el bucket actual
                 if ((*it2).key == key){
                     if(it->list->count <= 1 && it->next != nullptr){
                         (*prev).next = (*it).next;
@@ -240,7 +242,8 @@ Bucket<K, V>* split_bucket(Bucket<K, V>*& bucket, int N, int B, int B_prime){
 
     delete bucket;
     bucket = nullptr;
-    bucket = Bhelper; 
+    bucket = Bhelper;
 
     return B_prime_helper;
 }
+#endif // BUCKET_H
